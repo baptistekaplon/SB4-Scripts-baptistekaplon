@@ -11,6 +11,10 @@
 
 FICHIER_LOG="/tmp/purge-logs.log"
 
+log() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" >> "$FICHIER_LOG"
+}
+
 if [ "$#" -lt 1 ]; then
     echo "Usage : $0 <dossier> [jours]" >&2
     echo "Exemple : $0 /tmp/faux-logs 30" >&2
@@ -19,6 +23,9 @@ fi
 
 DOSSIER="$1"
 JOURS="${2:-30}"
+TAILLE=$(find "$DOSSIER" -type f -name "*.log" -mtime +"$JOURS" -exec du -ch {} + 2>/dev/null | tail -n 1 | cut -f1)
+
+log "=== Démarrage : dossier=$DOSSIER, seuil=$JOURS jours ==="
 
 # Le nombre de jours doit être un entier positif.
 # Si ce n'est pas le cas, la comparaison numérique échoue : on jette son
@@ -45,3 +52,12 @@ else
     find "$DOSSIER" -type f -name "*.log" -mtime +"$JOURS" -print
     find "$DOSSIER" -type f -name "*.log" -mtime +"$JOURS" -delete
 fi
+
+if [ "$NB" -eq 0 ]; then
+    log "Aucun fichier à supprimer"
+else
+    log "$NB fichier(s) de plus de $JOURS jours supprimé(s)"
+    log "$TAILLE ont été libérés"
+fi
+
+log "=== Fin de la purge ==="
