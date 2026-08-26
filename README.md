@@ -14,8 +14,11 @@ generer-faux-logs.sh : Script de création de faux logs dans un dossier /tmp/fau
 
 ```bash
 ./bash/purge-logs.sh /tmp/faux-logs 30
-./generer-faux-logs.sh
 ```
+
+```bash
+./generer-faux-logs.sh
+``
 
 ## Prérequis
 
