@@ -1,6 +1,6 @@
 # scripts-infra
 
-purge-logs.sh : Script de purge de logs de plus de N jours
+purge-logs.sh : Script de purge de logs de plus de N jours  
 generer-faux-logs.sh : Script de création de faux logs dans un dossier /tmp/faux-logs
 
 ## Contenu
